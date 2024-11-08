@@ -103,7 +103,7 @@ func confirmationPrompt(settings *settings) bool {
 	if choice == "Y" || choice == "y" {
 		return true
 	}
-	
+
 	return false
 }
 
@@ -145,10 +145,12 @@ func squidScan(proxy string, targetPort int) int {
 
 	var response [1024]byte
 
+
 	n, err := conn.Read(response[:])
 	if err != nil {
 		log.Printf("Error communicating with the local machine: %v", err)
 	}
+
 
 	if string(response[:n])[:12] != "HTTP/1.1 200" {
 		return 0
@@ -176,8 +178,8 @@ func squidder(settings *settings) {
 func main() {
 
 	var settings settings
-	fmt.Println("Welcome to squidscan!")
 
+	fmt.Println("Welcome to squidscan!")
 	settings = settingsInit()
 
 	ans := confirmationPrompt(&settings)
@@ -189,6 +191,5 @@ func main() {
 	}
 
 	fmt.Println("Well then let's get started :)")
-
 	squidder(&settings)
 }
