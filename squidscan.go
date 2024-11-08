@@ -100,16 +100,10 @@ func confirmationPrompt(settings *settings) bool {
 	fmt.Print("Do these settings look OK to you? <Y/N>: ")
 	fmt.Scan(&choice)
 
-<<<<<<< HEAD
 	if choice == "Y" || choice == "y" {
 		return true
 	}
-=======
-	if choice == "y" || choice == "Y" {
-	    return true
-	}
 	
->>>>>>> origin/master
 	return false
 }
 
