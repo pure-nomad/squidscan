@@ -5,8 +5,6 @@ import (
 	"log"
 	"net"
 	"os"
-
-	//"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -32,7 +30,7 @@ func makePortRange(min int, max int) []int {
 	return s
 }
 
-func portInput(msg string) (int, int, bool) {
+func portInput(msg string) (int, int) {
 
 	fmt.Print(msg)
 	var inp string
@@ -58,7 +56,7 @@ func portInput(msg string) (int, int, bool) {
 		return portInput(msg)
 	}
 
-	return minPort, maxPort, false
+	return minPort, maxPort
 }
 
 func settingsInput(msg string) (string, int) {
@@ -102,22 +100,19 @@ func confirmationPrompt(settings settings) bool {
 	fmt.Print("Do these settings look OK to you? <Y/N>: ")
 	fmt.Scan(&choice)
 
-	return choice == "y" || choice == "Y"
+	if choice == "Y" || choice == "y" {
+		return true
+	}
+	return false
 }
 
 func settingsInit() settings {
 
 	var settings settings
 	var minPort, maxPort int
-	var check bool
 
 	ip, pPort := settingsInput("Enter your proxy settings <ip:port>: ")
-	minPort, maxPort, check = portInput("Enter your port range <1-65535>: ")
-
-	if check {
-		log.Println("Invalid port range, try again.")
-		minPort, maxPort, check = portInput("Enter your port range <1-65535>: ")
-	}
+	minPort, maxPort = portInput("Enter your port range <1-65535>: ")
 
 	settings.proxyAddr = ip
 	settings.proxyPort = pPort
