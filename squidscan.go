@@ -91,7 +91,7 @@ func settingsInput(msg string) (string, int) {
 	return ip, port
 }
 
-func confirmationPrompt(settings settings) bool {
+func confirmationPrompt(settings *settings) bool {
 
 	var choice string
 	fmt.Printf("Proxy Address: %v\n", settings.proxyAddr)
@@ -100,9 +100,16 @@ func confirmationPrompt(settings settings) bool {
 	fmt.Print("Do these settings look OK to you? <Y/N>: ")
 	fmt.Scan(&choice)
 
+<<<<<<< HEAD
 	if choice == "Y" || choice == "y" {
 		return true
 	}
+=======
+	if choice == "y" || choice == "Y" {
+	    return true
+	}
+	
+>>>>>>> origin/master
 	return false
 }
 
@@ -120,21 +127,6 @@ func settingsInit() settings {
 	settings.maxPort = maxPort
 
 	return settings
-}
-
-func squidder(settings *settings) {
-
-	proxyCombined := settings.proxyAddr + ":" + strconv.Itoa(settings.proxyPort)
-
-	ports := makePortRange(settings.minPort, settings.maxPort)
-
-	for _, port := range ports {
-		valid := squidScan(proxyCombined, port)
-		if valid != 0 {
-			log.Printf("Open port %d", valid)
-		}
-	}
-
 }
 
 func squidScan(proxy string, targetPort int) int {
@@ -172,6 +164,21 @@ func squidScan(proxy string, targetPort int) int {
 
 }
 
+func squidder(settings *settings) {
+
+	proxyCombined := settings.proxyAddr + ":" + strconv.Itoa(settings.proxyPort)
+
+	ports := makePortRange(settings.minPort, settings.maxPort)
+
+	for _, port := range ports {
+		valid := squidScan(proxyCombined, port)
+		if valid != 0 {
+			log.Printf("Open port %d", valid)
+		}
+	}
+
+}
+
 func main() {
 
 	var settings settings
@@ -179,12 +186,12 @@ func main() {
 
 	settings = settingsInit()
 
-	ans := confirmationPrompt(settings)
+	ans := confirmationPrompt(&settings)
 
 	for !ans {
 		fmt.Println("Restarting...")
 		settings = settingsInit()
-		ans = confirmationPrompt(settings)
+		ans = confirmationPrompt(&settings)
 	}
 
 	fmt.Println("Well then let's get started :)")
